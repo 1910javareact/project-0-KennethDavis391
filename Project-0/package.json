@@ -1,0 +1,20 @@
+{
+  "name": "project-0",
+  "version": "1.0.0",
+  "description": "Reimbersment System",
+  "main": "index.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Kenneth Davis",
+  "license": "ISC",
+  "devDependencies": {
+    "ts-node": "^8.5.2",
+    "typescript": "^3.7.2",
+    "@types/express": "^4.17.2"
+  },
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "express": "^4.17.1"
+  }
+}

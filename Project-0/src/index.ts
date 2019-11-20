@@ -2,13 +2,14 @@ import express from 'express'
 import bodyparser from 'body-parser'
 import {sessionMiddleware} from './middleware/session-middleware'
 import { getUserByUsernameAndPassword } from './services/user-services'
+import { usersRouter } from './routers/users-router'
+import { requestsRouter } from './routers/requests-router'
 
 const app = express()
 
 app.use(bodyparser.json())
 
 app.use(sessionMiddleware)
-
 
 //take login requests
 app.post('/login', (req, res) => {
@@ -26,6 +27,12 @@ app.post('/login', (req, res) => {
         res.status(e.status).send(e.message)
     }
 })
+
+//redirect to users-router
+app.use('/users', usersRouter)
+
+//redirect to requests-router
+app.use('/requests', requestsRouter)
 
 //take requests on the port 9001
 app.listen(9001, ()=>{

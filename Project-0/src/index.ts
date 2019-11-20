@@ -21,7 +21,7 @@ app.post('/login', (req, res) => {
     //check if the username and password are valid and return a user if they are
     try{
         let user = getUserByUsernameAndPassword(username, password)
-        req.session.user = user
+        req.session.user = user        
         res.json(user)
     }catch(e){
         res.status(e.status).send(e.message)

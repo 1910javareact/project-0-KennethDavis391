@@ -1,23 +1,22 @@
-import { Role } from "../models/user";
 
 
 //using factory design pattern to make authorization easy to implement across the app
-export function authorization(roles: Role[]){
-    return (req, res, next)=>{
+export function authorization(roleIds: number[]){
+    return (req, res, next)=>{        
         let auth = false
+        
         if(!req.session.user){
             res.status(400).send('Please log in')
             return
         }
-        for (let userRole of req.session.user){
-            if(roles.includes(userRole)){
-                auth = true
-            }
+        
+        if(roleIds.includes(req.session.user.role.roleId)){
+            auth = true
         }
         if(auth){
             next()
         }else{
-            res.status(403).send("You are unauthorized to access this resource")
+            res.status(401).send("The incoming token has expired")
         }
     }
 }

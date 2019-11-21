@@ -1,4 +1,5 @@
 import { users } from "../database";
+import { User } from "../models/user";
 
 
 //see if there is a user with a username and password that match what was input for login
@@ -24,6 +25,20 @@ export function daoGetUsers(){
 export function daoGetUserById(id: number){
     for( let user of users){
         if (user.userId === id){
+            return user
+        }
+    }
+    throw{
+        status: 404,
+        message: 'User not found'
+    }
+}
+
+//update a user in the database and return the updated user
+export function daoUpdateUser(newUser: User){
+    for( let user of users){
+        if (user.userId === newUser.userId){
+            user = newUser
             return user
         }
     }

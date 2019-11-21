@@ -11,8 +11,20 @@ export let users: User[] = [{
 	email: "bob.richard@notreal.com",
     role: {
         roleId: 1,
-        role:"Finance Manager"
+        role:"Finance Manager",
     }
+},
+{
+    userId: 2,
+	username: "Admin",
+	password: "password",
+	firstName: "Michael",
+	lastName: "Scott",
+	email: "notbob.richard@notreal.com",
+    role: {
+        roleId: 2,
+        role:"Admin"
+    },
 }]
 
 //holder for requests

@@ -12,7 +12,7 @@ usersRouter.get('',authorization([1]),
         if (users){
             res.json(users)
         }else{
-            res.status(500).send('Could not find users')
+            res.status(500).send('Users not found')
         }
     }catch(e){
         res.status(e.status).send(e.message)
@@ -32,7 +32,7 @@ usersRouter.get('/:id',authorization([1],true),
             if(user){
                 res.json(user)
             }else{
-                res.status(500).send('Could not find user')
+                res.status(400).send('User not found')
             }
         }catch(e){
             res.status(e.status).send(e.message)
@@ -40,4 +40,20 @@ usersRouter.get('/:id',authorization([1],true),
     }
 
 
+})
+
+//update user info, only accessable by Admins
+usersRouter.patch('',authorization([2]),
+(req,res)=>{
+    try{
+        let {body} = req
+        let user = userServices.updateUser(body)
+        if(user){
+            res.status(200).json(user)
+        }else{
+            res.status(400).send('User not found')
+        }
+    }catch(e){
+        res.status(e.status).send(e.message)
+    }
 })

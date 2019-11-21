@@ -19,7 +19,7 @@ export class User{
 }
 
 export class Role{
-    roleId: number // primary key
+    roleId: number // primary key, (1 FM, 2 A, 3 U)
     role: string // not null, unique
 
     constructor(roleId: number, role: string){

@@ -17,11 +17,11 @@ export function getUserById(id: number){
     return userDao.daoGetUserById(id)
 }
 
-//update user from user Id, fianly something to do in the service layer
+//update user from user Id, fianlly something to do in the service layer
 export function updateUser(req: User){
     let user = userDao.daoGetUserById(req.userId)
     for(let key in req){
-        if(req[key] !== undefined){
+        if(req[key] !== undefined && user.hasOwnProperty(key)){
             user[key] = req[key]
         }
     }

@@ -3,7 +3,7 @@ import bodyparser from 'body-parser'
 import {sessionMiddleware} from './middleware/session-middleware'
 import { getUserByUsernameAndPassword } from './services/user-services'
 import { usersRouter } from './routers/users-router'
-import { requestsRouter } from './routers/requests-router'
+import { reimbursementsRouter } from './routers/reimbursements-router'
 
 const app = express()
 
@@ -32,7 +32,7 @@ app.post('/login', (req, res) => {
 app.use('/users', usersRouter)
 
 //redirect to requests-router
-app.use('/requests', requestsRouter)
+app.use('/reimbursements', reimbursementsRouter)
 
 //take requests on the port 9001
 app.listen(9001, ()=>{

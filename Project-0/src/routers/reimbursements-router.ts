@@ -41,3 +41,32 @@ reimbursementsRouter.get('/author/userId/:userId',authorization([1], true),
         }
     }
 })
+
+//submit a riembursement
+reimbursementsRouter.post('',authorization([1,2,3]),
+(req,res)=>{
+    let {body} = req
+    try{
+        let post = { //still lets you not include fields
+	        author: req.session.user.userId,
+            amount: body.amount,
+            dateSubmitted: 10,//update later to depend on the time the request was submited
+            description: body.description,
+            type: body.type
+        }
+        for (let key in post){
+            if (post[key] === undefined){
+                throw Error
+            }
+        }
+        try{
+            let newPost = reimbursementsServices.postReimbersement(post)
+            res.status(201).json(newPost)
+        }catch(e){
+            res.status(e.status).send(e.message)
+        }
+        
+    }catch{
+        res.status(400).send('Please include all request fields')
+    }
+})

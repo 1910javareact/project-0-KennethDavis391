@@ -10,3 +10,8 @@ export function getReimbursementsByStatusId(statusId: number){
 export function getReimbursementsByUserId(userId: number){
     return reimbursementsDao.daoGetReimbursementsByUserId(userId)
 }
+
+//call the daoPostReimbersement and return the post
+export function postReimbersement(post){
+    return reimbursementsDao.daoPostReimbersement(post)
+}

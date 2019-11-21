@@ -1,6 +1,6 @@
 import { reimbursements } from "../database";
 
-
+let reimbursementId = 3
 //get the reimbursements with a given status Id
 export function daoGetReimbursementsByStatusId(statusId: number){
     let filteredReimbursements = [...reimbursements]
@@ -39,4 +39,18 @@ export function daoGetReimbursementsByUserId(userId: number){
         }
     }
     return filteredReimbursements
+}
+
+//make a new post
+export function daoPostReimbersement(post){
+    post.reimbursementId = reimbursementId
+    post.dateResolved = -1
+    post.resolver = null
+    post.status = 1
+
+    reimbursementId++
+
+    reimbursements.push(post)
+
+    return post
 }

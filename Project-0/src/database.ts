@@ -28,4 +28,25 @@ export let users: User[] = [{
 }]
 
 //holder for requests
-export let reimbursements: Reimbursement[] = []
+export let reimbursements: Reimbursement[] = [{
+    reimbursementId: 1,
+	author: 2,
+	amount: 100.00,
+    dateSubmitted: 20,
+    dateResolved: 21,
+    description: "Embezelment",
+    resolver: 1,
+    status: 2,
+    type: 1
+},
+{
+    reimbursementId: 2,
+	author: 1,
+	amount: 2.00,
+    dateSubmitted: 20,
+    dateResolved: 21,
+    description: "not embezelment",
+    resolver: 1,
+    status: 3,
+    type: 1
+}]

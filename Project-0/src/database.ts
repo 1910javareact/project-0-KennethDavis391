@@ -3,7 +3,7 @@ import { Reimbursement } from "./models/reimbursement";
 
 //holder for users
 export let users: User[] = [{
-    userId: 0,
+    userId: 1,
 	username: "Finance Manager",
 	password: "password",
 	firstName: "Bob",

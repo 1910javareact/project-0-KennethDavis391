@@ -10,3 +10,8 @@ export function getUserByUsernameAndPassword(username:string, password:string){
 export function getUsers(){
     return userDao.daoGetUsers()
 }
+
+//call the daoGetUserById function from user-dao, no manipulation required for this request
+export function getUserById(id: number){
+    return userDao.daoGetUserById(id)
+}

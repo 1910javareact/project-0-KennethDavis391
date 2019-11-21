@@ -19,3 +19,16 @@ export function daoGetUserByUsernameAndPassword(username:string, password:string
 export function daoGetUsers(){
     return users
 }
+
+//get a user from the database based on Id
+export function daoGetUserById(id: number){
+    for( let user of users){
+        if (user.userId === id){
+            return user
+        }
+    }
+    throw{
+        status: 404,
+        message: 'User not found'
+    }
+}

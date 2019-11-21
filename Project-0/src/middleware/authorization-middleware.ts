@@ -1,7 +1,7 @@
 
 
 //using factory design pattern to make authorization easy to implement across the app
-export function authorization(roleIds: number[], userId?: number){
+export function authorization(roleIds: number[], userId?: boolean){
     return (req, res, next)=>{        
         let auth = false
         
@@ -10,12 +10,18 @@ export function authorization(roleIds: number[], userId?: number){
             return
         }
         
+        //check if there role has authorization
         if(roleIds.includes(req.session.user.role.roleId)){
             auth = true
         }
+
+        //check if userId is the same as what they're trying to access
         if(userId){
-            if(req.session.user.userId === userId){
-                auth = true
+            let id = +req.params.id
+            if(!isNaN(id)){
+                if(req.session.user.userId === id){
+                    auth = true
+                }
             }
         }
 

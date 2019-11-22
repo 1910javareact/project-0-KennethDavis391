@@ -15,3 +15,15 @@ export function getReimbursementsByUserId(userId: number){
 export function postReimbersement(post){
     return reimbursementsDao.daoPostReimbersement(post)
 }
+
+//call the daoPatchReimbersement and return the updated post
+export function patchReimbersement(patch){
+    let post = reimbursementsDao.daoGetReimbursementsByReimbursementId(patch.reimbersementId)
+    for (let key in post){
+        if(patch.hasOwnProperty(key)){
+            post[key] = patch[key]
+        }
+    }
+    reimbursementsDao.daoReplaceReimbursement(post)
+    return(post)
+}

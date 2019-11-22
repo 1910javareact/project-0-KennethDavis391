@@ -70,3 +70,30 @@ reimbursementsRouter.post('',authorization([1,2,3]),
         res.status(400).send('Please include all request fields')
     }
 })
+
+//update a reimbursement
+reimbursementsRouter.patch('', authorization([1]), 
+(req,res)=>{
+    let {body} = req
+    try{
+        let patch = {
+            reimbursementId: body.reimbursementId,
+            dateResolved: 10,
+            resolver: req.session.user.userId,
+            status: body.status
+        }
+        for (let key in patch){
+            if (patch[key] === undefined){
+                throw Error
+            }
+        }
+        try{
+            let newPost = reimbursementsServices.patchReimbersement(patch)
+            res.status(201).json(newPost)
+        }catch(e){
+            res.status(e.status).send(e.message)
+        }
+    }catch{
+        res.status(400).send('Please include a status and reimbursement Id')
+    }
+})

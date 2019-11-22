@@ -1,4 +1,5 @@
 import { reimbursements } from "../database";
+import { Reimbursement } from "../models/reimbursement";
 
 let reimbursementId = 3
 //get the reimbursements with a given status Id
@@ -41,7 +42,7 @@ export function daoGetReimbursementsByUserId(userId: number){
     return filteredReimbursements
 }
 
-//make a new post
+//make a new reimbersement request
 export function daoPostReimbersement(post){
     post.reimbursementId = reimbursementId
     post.dateResolved = -1
@@ -53,4 +54,31 @@ export function daoPostReimbersement(post){
     reimbursements.push(post)
 
     return post
+}
+
+//get a reimbersement by it's id
+export function daoGetReimbursementsByReimbursementId(reimbersementId: number){
+    for(let reimbersement of reimbursements){
+        if(reimbersement.reimbursementId === reimbersementId){
+            return reimbersement
+        }
+    }
+    throw{
+        status: 404,
+        message: 'ReimbersementId not found'
+    }
+}
+
+//replace a reimbersemnt by it's id
+export function daoReplaceReimbursement(reimbursementUpdate: Reimbursement){
+    for(let reimbursement of reimbursements){
+        if(reimbursementUpdate.reimbursementId === reimbursement.reimbursementId){
+            reimbursement = reimbursementUpdate
+            return
+        }
+    }
+    throw{
+        status: 404,
+        message: 'ReimbersementId not found'
+    }
 }

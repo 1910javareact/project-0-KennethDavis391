@@ -57,15 +57,15 @@ export function daoPostReimbersement(post){
 }
 
 //get a reimbersement by it's id
-export function daoGetReimbursementsByReimbursementId(reimbersementId: number){
-    for(let reimbersement of reimbursements){
-        if(reimbersement.reimbursementId === reimbersementId){
-            return reimbersement
+export function daoGetReimbursementsByReimbursementId(reimbursementId: number){
+    for(let reimbursement of reimbursements){
+        if(reimbursement.reimbursementId === reimbursementId){
+            return reimbursement
         }
     }
     throw{
         status: 404,
-        message: 'ReimbersementId not found'
+        message: 'ReimbursementId not found'
     }
 }
 
@@ -79,6 +79,6 @@ export function daoReplaceReimbursement(reimbursementUpdate: Reimbursement){
     }
     throw{
         status: 404,
-        message: 'ReimbersementId not found'
+        message: 'ReimbursementId not found'
     }
 }

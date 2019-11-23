@@ -11,11 +11,14 @@ export function authorization(roleIds: number[], userId?: boolean){
         }
         
         //check if there role has authorization
-        if(roleIds.includes(req.session.user.role.roleId)){
-            auth = true
+        for ( let role of req.session.user.roles){
+            if(roleIds.includes(role.roleId)){
+                auth = true
+            }
         }
 
-        //check if userId is the same as what they're trying to access
+        //check if userId is the same as what they're trying to access 
+        //put false or don't enter second param if you don't want to check user id
         if(userId){
             let id = +req.params.id
             if(!isNaN(id)){

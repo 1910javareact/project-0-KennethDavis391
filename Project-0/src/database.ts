@@ -9,10 +9,10 @@ export let users: User[] = [{
 	firstName: "Bob",
 	lastName: "Richard",
 	email: "bob.richard@notreal.com",
-    role: {
+    roles: [{
         roleId: 1,
         role:"Finance Manager",
-    }
+    }]
 },
 {
     userId: 2,
@@ -21,10 +21,10 @@ export let users: User[] = [{
 	firstName: "Michael",
 	lastName: "Scott",
 	email: "notbob.richard@notreal.com",
-    role: {
+    roles: [{
         roleId: 2,
         role:"Admin"
-    },
+    }],
 }]
 
 //holder for requests

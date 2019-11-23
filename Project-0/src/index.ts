@@ -4,6 +4,7 @@ import {sessionMiddleware} from './middleware/session-middleware'
 import { getUserByUsernameAndPassword } from './services/user-services'
 import { usersRouter } from './routers/users-router'
 import { reimbursementsRouter } from './routers/reimbursements-router'
+import { loggingMiddleware } from './middleware/logging-middleware'
 
 const app = express()
 
@@ -12,7 +13,7 @@ app.use(bodyparser.json())
 app.use(sessionMiddleware)
 
 //take login requests
-app.post('/login', (req, res) => {
+app.post('/login', async (req, res) => {
     let {username, password} = req.body
     //if they don't put in a username or password deny their request
     if(!username || !password){
@@ -20,13 +21,15 @@ app.post('/login', (req, res) => {
     }
     //check if the username and password are valid and return a user if they are
     try{
-        let user = getUserByUsernameAndPassword(username, password)
+        let user = await getUserByUsernameAndPassword(username, password)
         req.session.user = user        
         res.json(user)
     }catch(e){
         res.status(e.status).send(e.message)
     }
 })
+
+app.use(loggingMiddleware)
 
 //redirect to users-router
 app.use('/users', usersRouter)

@@ -3,8 +3,12 @@ import { User } from "../models/user";
 
 
 //call the username and password check from the repository layer, no manipulation required for this request
-export function getUserByUsernameAndPassword(username:string, password:string){
-    return userDao.daoGetUserByUsernameAndPassword(username, password)
+export function getUserByUsernameAndPassword(username:string, password:string): Promise<User>{
+    try{
+        return userDao.daoGetUserByUsernameAndPassword(username, password)
+    }catch(e){
+        throw(e)
+    }
 }
 
 //call the daoGetUsers function from user-dao, no manipulation required for this request

@@ -6,9 +6,9 @@ export const usersRouter = express.Router()
 
 //geting all users, only accessable by finance managers
 usersRouter.get('',authorization([1]),
-(req,res)=>{
+async (req,res)=>{
     try{
-        let users = userServices.getUsers()
+        let users = await userServices.getUsers()
         if (users){
             res.json(users)
         }else{

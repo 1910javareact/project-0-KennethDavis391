@@ -2,15 +2,14 @@ import { users } from "../database";
 import { User } from "../models/user";
 import { PoolClient } from 'pg';
 import { connectionPool } from '.';
-import { userDTOtoUser } from "../util/UserDTO-to-User";
+import { userDTOtoUser, multiUserDTOtoUser } from "../util/UserDTO-to-User";
 
 
 //see if there is a user with a username and password that match what was input for login, if so return the user
 export async function daoGetUserByUsernameAndPassword(username:string, password:string):Promise<User>{
     let client: PoolClient
     try{
-        
-        client = await connectionPool.connect()//error thrown here
+        client = await connectionPool.connect()
         
         let result = await client.query('SELECT * FROM project_0.user NATURAL JOIN project_0.user_role NATURAL JOIN project_0.role WHERE username = $1 and password = $2',
             [username,password])
@@ -38,9 +37,33 @@ export async function daoGetUserByUsernameAndPassword(username:string, password:
     } 
 }
 
-//get all users from the database
-export function daoGetUsers(){
-    return users
+//get all users from the database, return them in an array
+export async function daoGetUsers(){
+    let client: PoolClient
+    try{
+        client = await connectionPool.connect()
+        
+        let result = await client.query('SELECT * FROM project_0.user NATURAL JOIN project_0.user_role NATURAL JOIN project_0.role')
+        if(result.rowCount === 0){
+            throw 'No users in database'
+        } else {
+            return multiUserDTOtoUser(result.rows)
+        }
+    } catch(e) {
+        if(e === 'No users in database'){
+            throw{
+                status: 400,
+                message: 'No users in database'
+            }
+        } else {
+            throw{
+                status: 500,
+                message: 'Internal Server Error'
+            }
+        }
+    } finally {
+        client.release()
+    }
 }
 
 //get a user from the database based on Id

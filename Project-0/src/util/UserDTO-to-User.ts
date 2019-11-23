@@ -19,7 +19,7 @@ export function multiUserDTOtoUser(users: UserDTO[]): User[] {
     let currentUser: UserDTO[] = []
     let result: User[] = []
     for (let user of users){
-        if(currentUser === []){
+        if(currentUser.length === 0){
             currentUser.push(user)
         }else if (currentUser[0].user_id === user.user_id){
             currentUser.push(user)

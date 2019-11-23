@@ -7,13 +7,17 @@ export function getUserByUsernameAndPassword(username:string, password:string): 
     try{
         return userDao.daoGetUserByUsernameAndPassword(username, password)
     }catch(e){
-        throw(e)
+        throw e
     }
 }
 
 //call the daoGetUsers function from user-dao, no manipulation required for this request
 export function getUsers(){
-    return userDao.daoGetUsers()
+    try{
+        return userDao.daoGetUsers()
+    } catch(e) {
+        throw e
+    }
 }
 
 //call the daoGetUserById function from user-dao, no manipulation required for this request

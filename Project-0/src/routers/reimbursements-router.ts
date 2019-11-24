@@ -23,21 +23,18 @@ async (req,res)=>{
 
 //get reimbursements by userId
 reimbursementsRouter.get('/author/userId/:userId',authorization([1], true),loggingMiddleware,
-(req,res)=>{
-    // let userId = +req.params.userId
-    // if(isNaN(userId)){
-    //     res.status(400).send('Invalid userId')
-    // }else{
-    //     try{
-    //         let reimbursements = reimbursementsServices.getReimbursementsByUserId(userId)
-    //         if(!reimbursements){
-    //             res.status(500).send('Something went wrong with the server, try again later')
-    //         }
-    //         res.json(reimbursements)
-    //     }catch(e){
-    //         res.status(e.status).send(e.message)
-    //     }
-    // }
+async (req,res)=>{
+    let userId = +req.params.userId
+    if(isNaN(userId)){
+        res.status(400).send('Invalid userId')
+    }else{
+        try{
+            let reimbursements = await reimbursementsServices.getReimbursementsByUserId(userId)
+            res.json(reimbursements)
+        }catch(e){
+            res.status(e.status).send(e.message)
+        }
+    }
 })
 
 //submit a riembursement

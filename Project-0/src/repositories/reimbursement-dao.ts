@@ -34,23 +34,33 @@ export async function daoGetReimbursementsByStatusId(statusId: number){
 }
 
 //find reimbursements by user id and return the array
-export function daoGetReimbursementsByUserId(userId: number){
-    // let filteredReimbursements = [...reimbursements]
-    // try{
-    //     filteredReimbursements = filteredReimbursements.filter((ele,index,arr)=>{
-    //         if(userId === ele.author){
-    //             return true
-    //         }else{
-    //             return false
-    //         }
-    //     })
-    // }catch{
-    //     throw{
-    //         status:500,
-    //         Message: 'something went wrong with the server, try again later'
-    //     }
-    // }
-    // return filteredReimbursements
+export async function daoGetReimbursementsByUserId(userId: number){
+    let client: PoolClient
+    try{
+        client = await connectionPool.connect()
+        let result = await client.query('SELECT * FROM project_0.reimbursement NATURAL JOIN project_0.reimbursement_status NATURAL JOIN project_0.reimbursement_type WHERE author = $1',
+        [userId])
+        if(result.rowCount === 0){
+            throw 'No Reimbursements By That User'
+        }else{
+            return multiReimbursementDTOtoReimbursement(result.rows)
+        }
+    } catch (e) {
+        if(e === 'No Reimbursements By That User'){
+            throw {
+                status: 404,
+                message: 'No Reimbursements By That User'
+            }
+        }else{
+            throw{
+                status:500,
+                Message: 'something went wrong with the server, try again later'
+            }
+        }
+        
+    } finally {
+        client.release()
+    }
 }
 
 //make a new reimbersement request

@@ -12,7 +12,12 @@ export function getReimbursementsByStatusId(statusId: number){
 
 //call the daoGetReimbursementsByUserId and return the data once it's collected
 export function getReimbursementsByUserId(userId: number){
-    return reimbursementsDao.daoGetReimbursementsByUserId(userId)
+    try{
+        return reimbursementsDao.daoGetReimbursementsByUserId(userId)
+    }catch(e) {
+        throw e
+    }
+    
 }
 
 //call the daoPostReimbersement and return the post

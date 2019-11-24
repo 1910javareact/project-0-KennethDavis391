@@ -3,7 +3,11 @@ import * as reimbursementsDao from "../repositories/reimbursement-dao";
 
 //call the daoGetReimbursementsByStatusId and return the data once it's collected
 export function getReimbursementsByStatusId(statusId: number){
-    return reimbursementsDao.daoGetReimbursementsByStatusId(statusId)
+    try{
+        return reimbursementsDao.daoGetReimbursementsByStatusId(statusId)
+    } catch(e) {
+        throw e
+    }
 }
 
 //call the daoGetReimbursementsByUserId and return the data once it's collected
@@ -18,12 +22,12 @@ export function postReimbersement(post){
 
 //call the daoPatchReimbersement and return the updated post
 export function patchReimbersement(patch){    
-    let post = reimbursementsDao.daoGetReimbursementsByReimbursementId(patch.reimbursementId)
-    for (let key in post){
-        if(patch.hasOwnProperty(key)){
-            post[key] = patch[key]
-        }
-    }
-    reimbursementsDao.daoReplaceReimbursement(post)
-    return(post)
+    // let post = reimbursementsDao.daoGetReimbursementsByReimbursementId(patch.reimbursementId)
+    // for (let key in post){
+    //     if(patch.hasOwnProperty(key)){
+    //         post[key] = patch[key]
+    //     }
+    // }
+    // reimbursementsDao.daoReplaceReimbursement(post)
+    // return(post)
 }

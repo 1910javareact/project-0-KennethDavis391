@@ -1,7 +1,6 @@
 import { UserDTO } from "../dto-models/user";
 import { User } from "../models/user";
 
-
 //takes in multiple UserDTO's and turns them into one User with an array of roles
 export function userDTOtoUser(users: UserDTO[]): User {
     let roles = [];

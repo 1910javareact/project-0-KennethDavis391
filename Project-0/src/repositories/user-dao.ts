@@ -67,15 +67,32 @@ export async function daoGetUsers(){
 }
 
 //get a user from the database based on Id
-export function daoGetUserById(id: number){
-    for( let user of users){
-        if (user.userId === id){
-            return user
+export async function daoGetUserById(id: number){
+    let client: PoolClient
+    try{
+        client = await connectionPool.connect()
+        let result = await client.query('SELECT * FROM project_0.user NATURAL JOIN project_0.user_role NATURAL JOIN project_0.role WHERE user_id = $1',
+        [id])        
+        if(result.rowCount === 0){
+            throw 'User does not exist'
+        }else{
+            
+            return userDTOtoUser(result.rows)
         }
-    }
-    throw{
-        status: 404,
-        message: 'User not found'
+    }catch(e){
+        if (e === 'User does not exist'){
+            throw{
+                status: 404,
+                message: 'User not found'
+            }
+        }else{
+            throw{
+                status: 500,
+                message: 'Internal Server Error'
+            }
+        }
+    }finally{
+        client.release()
     }
 }
 

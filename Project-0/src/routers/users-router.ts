@@ -9,11 +9,7 @@ usersRouter.get('',authorization([1]),
 async (req,res)=>{
     try{
         let users = await userServices.getUsers()
-        if (users){
-            res.json(users)
-        }else{
-            res.status(500).send('Users not found')
-        }
+        res.json(users)
     }catch(e){
         res.status(e.status).send(e.message)
     }
@@ -22,18 +18,14 @@ async (req,res)=>{
 
 //getting a user by Id, accessable by finance managers, and the user with that id
 usersRouter.get('/:id',authorization([1],true),
-(req,res) =>{
+async (req,res) =>{
     let id = +req.params.id
     if(isNaN(id)){
         res.status(400).send('Invalid Id')
     }else{
         try{
-            let user = userServices.getUserById(id)
-            if(user){
-                res.json(user)
-            }else{
-                res.status(400).send('User not found')
-            }
+            let user = await userServices.getUserById(id)
+            res.json(user)
         }catch(e){
             res.status(e.status).send(e.message)
         }

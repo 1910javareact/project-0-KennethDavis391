@@ -22,7 +22,12 @@ export function getUsers(){
 
 //call the daoGetUserById function from user-dao, no manipulation required for this request
 export function getUserById(id: number){
-    return userDao.daoGetUserById(id)
+    try{
+        return userDao.daoGetUserById(id)
+    } catch(e) {
+        throw e
+    }
+    
 }
 
 //update user from user Id, fianlly something to do in the service layer
@@ -33,5 +38,5 @@ export function updateUser(req: User){
             user[key] = req[key]
         }
     }
-    return userDao.daoUpdateUser(user)
+    return null//userDao.daoUpdateUser(user)
 }

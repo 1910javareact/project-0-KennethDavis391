@@ -1,11 +1,12 @@
 import express from "express"
 import { authorization } from "../middleware/authorization-middleware"
 import * as reimbursementsServices from "../services/reimbursements-services"
+import { loggingMiddleware } from "../middleware/logging-middleware"
 
 export const reimbursementsRouter = express.Router()
 
 //finding reimbursements by status
-reimbursementsRouter.get('/status/:statusId',authorization([1]), 
+reimbursementsRouter.get('/status/:statusId',authorization([1]),loggingMiddleware,
 (req,res)=>{
     let statusId = +req.params.statusId
     if(isNaN(statusId)){
@@ -24,7 +25,7 @@ reimbursementsRouter.get('/status/:statusId',authorization([1]),
 })
 
 //get reimbursements by userId
-reimbursementsRouter.get('/author/userId/:userId',authorization([1], true), 
+reimbursementsRouter.get('/author/userId/:userId',authorization([1], true),loggingMiddleware,
 (req,res)=>{
     let userId = +req.params.userId
     if(isNaN(userId)){
@@ -43,7 +44,7 @@ reimbursementsRouter.get('/author/userId/:userId',authorization([1], true),
 })
 
 //submit a riembursement
-reimbursementsRouter.post('',authorization([1,2,3]),
+reimbursementsRouter.post('',authorization([1,2,3]),loggingMiddleware,
 (req,res)=>{
     let {body} = req
     try{
@@ -72,7 +73,7 @@ reimbursementsRouter.post('',authorization([1,2,3]),
 })
 
 //update a reimbursement
-reimbursementsRouter.patch('', authorization([1]), 
+reimbursementsRouter.patch('', authorization([1]),loggingMiddleware,
 (req,res)=>{
     let {body} = req
     try{

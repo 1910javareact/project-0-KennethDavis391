@@ -1,4 +1,3 @@
-import { users } from "../database";
 import { User } from "../models/user";
 import { PoolClient } from 'pg';
 import { connectionPool } from '.';
@@ -43,7 +42,7 @@ export async function daoGetUsers(){
     try{
         client = await connectionPool.connect()
         
-        let result = await client.query('SELECT * FROM project_0.user NATURAL JOIN project_0.user_role NATURAL JOIN project_0.role')
+        let result = await client.query('SELECT * FROM project_0.user NATURAL JOIN project_0.user_role NATURAL JOIN project_0.role ORDER BY user_id')
         if(result.rowCount === 0){
             throw 'No users in database'
         } else {
@@ -97,15 +96,28 @@ export async function daoGetUserById(id: number){
 }
 
 //update a user in the database and return the updated user
-export function daoUpdateUser(newUser: User){
-    for( let user of users){
-        if (user.userId === newUser.userId){
-            user = newUser
-            return user
+//this will update the relevent fields in the user table, and delete all user_role entries then re add the new ones
+export async function daoUpdateUser(newUser: User){
+    let client: PoolClient
+    try{
+        client = await connectionPool.connect()
+        client.query('BEGIN')
+        client.query('update project_0.user set username = $1, password = $2, first_name = $3, last_name = $4, email = $5 where user_id = $6',
+            [newUser.username,newUser.password,newUser.firstName,newUser.lastName,newUser.email,newUser.userId])
+        client.query('delete from project_0.user_role where user_id = $1',
+            [newUser.userId])
+        for( let role of newUser.roles){
+            client.query('insert into project_0.user_role values ($1,$2)',
+            [newUser.userId, role.roleId])
         }
-    }
-    throw{
-        status: 404,
-        message: 'User not found'
+        client.query('COMMIT')
+    }catch(e){
+        client.query('ROLLBACK')
+        throw {
+            status: 500,
+            message: 'Internal Server Error'
+        }
+    }finally{
+        client.release()
     }
 }

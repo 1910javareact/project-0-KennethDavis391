@@ -22,7 +22,12 @@ export function getReimbursementsByUserId(userId: number){
 
 //call the daoPostReimbersement and return the post
 export function postReimbersement(post){
-    return reimbursementsDao.daoPostReimbersement(post)
+    try{
+        return reimbursementsDao.daoPostReimbersement(post)
+    }catch(e){
+        throw e
+    }
+    
 }
 
 //call the daoPatchReimbersement and return the updated post

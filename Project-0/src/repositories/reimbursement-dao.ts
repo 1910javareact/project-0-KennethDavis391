@@ -1,7 +1,7 @@
 import { Reimbursement } from "../models/reimbursement";
-import { PoolClient } from "pg";
 import { connectionPool } from ".";
 import { multiReimbursementDTOtoReimbursement, reimbursementDTOtoReimbursement } from "../util/ReimbursementDTO-to-Reimbursemtent";
+import { PoolClient } from "pg";
 
 //get the reimbursements with a given status Id
 export async function daoGetReimbursementsByStatusId(statusId: number){
@@ -76,6 +76,7 @@ export async function daoPostReimbersement(post){
         client.query('COMMIT')
         return reimbursementDTOtoReimbursement(result.rows)
     }catch(e){
+        client.query('ROLLBACK')
         throw{
             status: 500,
             message: 'Internal Server Error'
@@ -86,28 +87,55 @@ export async function daoPostReimbersement(post){
 }
 
 //get a reimbersement by it's id
-export function daoGetReimbursementsByReimbursementId(reimbursementId: number){
-    // for(let reimbursement of reimbursements){
-    //     if(reimbursement.reimbursementId === reimbursementId){
-    //         return reimbursement
-    //     }
-    // }
-    // throw{
-    //     status: 404,
-    //     message: 'ReimbursementId not found'
-    // }
+export async function daoGetReimbursementsByReimbursementId(reimbursementId: number){
+    let client: PoolClient
+    try{
+        client = await connectionPool.connect()        
+        let result = await client.query('SELECT * FROM project_0.reimbursement WHERE reimbursement_id = $1',
+        [reimbursementId])        
+        if(result.rowCount === 0){
+            throw 'Reimbursement Does Not Exist'
+        }else{
+            return reimbursementDTOtoReimbursement(result.rows)
+        }
+    }catch(e){
+        if(e === 'Reimbursement Does Not Exist'){
+            throw{
+                status: 404,
+                message: 'Reimbursement Does Not Exist'
+            }
+        }else{
+            throw{
+                status: 500,
+                message: 'Internal Server Error'
+            }
+        }
+    }finally{
+        client.release()
+    }
 }
 
 //replace a reimbersemnt by it's id
-export function daoReplaceReimbursement(reimbursementUpdate: Reimbursement){
-    // for(let reimbursement of reimbursements){
-    //     if(reimbursementUpdate.reimbursementId === reimbursement.reimbursementId){
-    //         reimbursement = reimbursementUpdate
-    //         return
-    //     }
-    // }
-    // throw{
-    //     status: 404,
-    //     message: 'ReimbursementId not found'
-    // }
+export async function daoUpdateReimbursement(reimbursementUpdate: Reimbursement){    
+    let client: PoolClient
+    try{
+        client = await connectionPool.connect()
+        await client.query('UPDATE project_0.reimbursement SET date_resolved = now(), resolver = $1, status_id = $2 WHERE reimbursement_id = $3',
+        [reimbursementUpdate.resolver,reimbursementUpdate.status, reimbursementUpdate.reimbursementId])
+        return await daoGetReimbursementsByReimbursementId(reimbursementUpdate.reimbursementId)
+    }catch(e){
+        if(e === 'Reimbursement Does Not Exist'){
+            throw{
+                status: 404,
+                message: 'Reimbursement Does Not Exist'
+            }
+        }else{
+            throw{
+                status: 500,
+                message: 'Internal Server Error'
+            }
+        }
+    }finally{
+        client.release()
+    }
 }

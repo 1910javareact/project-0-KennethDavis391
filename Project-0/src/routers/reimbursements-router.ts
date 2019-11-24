@@ -62,28 +62,25 @@ reimbursementsRouter.post('', authorization([1, 2, 3]), loggingMiddleware,
     })
 
 //update a reimbursement
+//only admins are allowed to update a request, and only approve or deny them
+//only a status and reimbursementId is required
 reimbursementsRouter.patch('', authorization([1]), loggingMiddleware,
-    (req, res) => {
+    async (req, res) => {
         let { body } = req
+        let patch = {
+            reimbursementId: body.reimbursementId,
+            resolver: req.session.user.userId,
+            status: body.status
+        }
+        for (let key in patch) {
+            if (!patch[key]) {
+                res.status(400).send('Please include a status and reimbursement Id')
+            }
+        }
         try {
-            let patch = {
-                reimbursementId: body.reimbursementId,
-                dateResolved: 10,
-                resolver: req.session.user.userId,
-                status: body.status
-            }
-            for (let key in patch) {
-                if (patch[key] === undefined) {
-                    throw Error
-                }
-            }
-            try {
-                let newPost = reimbursementsServices.patchReimbersement(patch)
-                res.status(201).json(newPost)
-            } catch (e) {
-                res.status(e.status).send(e.message)
-            }
-        } catch{
-            res.status(400).send('Please include a status and reimbursement Id')
+            let newPost = await reimbursementsServices.patchReimbersement(patch)
+            res.status(201).json(newPost)
+        } catch (e) {
+            res.status(e.status).send(e.message)
         }
     })

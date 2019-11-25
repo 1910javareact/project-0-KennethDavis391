@@ -1,15 +1,15 @@
 
-//format we get reimbursements from the databse in
+// format we get reimbursements from the databse in
 export class ReimbursementDTO {
-    reimbursement_id: number
-    author: number
-    amount: number
-    date_submitted: string
-    date_resolved: string
-    description: string
-    resolver: number
-    status_id: number
-    status: string
-    type_id: number
-    type: string
+    reimbursement_id: number;
+    author: number;
+    amount: number;
+    date_submitted: string;
+    date_resolved: string;
+    description: string;
+    resolver: number;
+    status_id: number;
+    status: string;
+    type_id: number;
+    type: string;
 }

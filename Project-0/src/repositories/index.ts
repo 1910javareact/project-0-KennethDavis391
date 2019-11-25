@@ -1,4 +1,4 @@
-import {Pool} from 'pg'
+import { Pool } from 'pg';
 
 export const connectionPool: Pool = new Pool({
     user: process.env['PROJECT_0_USERNAME'],
@@ -7,4 +7,4 @@ export const connectionPool: Pool = new Pool({
     password: process.env['PROJECT_0_PASSWORD'],
     port: 5432,
     max: 5,
-})
+});

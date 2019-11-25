@@ -5,7 +5,9 @@
   "main": "index.ts",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon --exec ts-node src/index.ts"
+    "start": "nodemon --exec ts-node src/index.ts",
+    "lint": "tslint src/**/*.ts",
+    "lint:fix": "tslint src/**/*.ts --fix"
   },
   "author": "Kenneth Davis",
   "license": "ISC",
@@ -15,6 +17,7 @@
     "@types/pg": "^7.11.2",
     "nodemon": "^2.0.1",
     "ts-node": "^8.5.2",
+    "tslint": "^5.20.1",
     "typescript": "^3.7.2"
   },
   "dependencies": {

@@ -20,7 +20,7 @@ export function authorization(roleIds: number[], userId?: boolean){
         //check if userId is the same as what they're trying to access 
         //put false or don't enter second param if you don't want to check user id
         if(userId){
-            let id = +req.params.id
+            let id = +req.params.userId
             if(!isNaN(id)){
                 if(req.session.user.userId === id){
                     auth = true

@@ -18,7 +18,7 @@ async (req,res)=>{
 })
 
 //getting a user by Id, accessable by finance managers, and the user with that id
-usersRouter.get('/:id',authorization([1],true),loggingMiddleware,
+usersRouter.get('/:userId',authorization([1],true),loggingMiddleware,
 async (req,res) =>{
     let id = +req.params.id
     if(isNaN(id)){

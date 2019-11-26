@@ -1,12 +1,11 @@
 import express from 'express';
 import { authorization } from '../middleware/authorization-middleware';
 import * as reimbursementsServices from '../services/reimbursements-services';
-import { loggingMiddleware } from '../middleware/logging-middleware';
 
 export const reimbursementsRouter = express.Router();
 
 // finding reimbursements by status
-reimbursementsRouter.get('/status/:statusId', authorization([1]), loggingMiddleware,
+reimbursementsRouter.get('/status/:statusId', authorization([1]),
     async (req, res) => {
         const statusId = +req.params.statusId;
         if (isNaN(statusId)) {
@@ -22,7 +21,7 @@ reimbursementsRouter.get('/status/:statusId', authorization([1]), loggingMiddlew
     });
 
 // get reimbursements by userId
-reimbursementsRouter.get('/author/userId/:userId', authorization([1], true), loggingMiddleware,
+reimbursementsRouter.get('/author/userId/:userId', authorization([1], true),
     async (req, res) => {
         const userId = +req.params.userId;
         if (isNaN(userId)) {
@@ -39,7 +38,7 @@ reimbursementsRouter.get('/author/userId/:userId', authorization([1], true), log
 
 // submit a riembursement, date submitted will be handled in the database
 // amount description and type are all that are required
-reimbursementsRouter.post('', authorization([1, 2, 3]), loggingMiddleware,
+reimbursementsRouter.post('', authorization([1, 2, 3]),
     async (req, res) => {
         const { body } = req;
         const post = {
@@ -64,7 +63,7 @@ reimbursementsRouter.post('', authorization([1, 2, 3]), loggingMiddleware,
 // update a reimbursement
 // only admins are allowed to update a request, and only approve or deny them
 // only a status and reimbursementId is required
-reimbursementsRouter.patch('', authorization([1]), loggingMiddleware,
+reimbursementsRouter.patch('', authorization([1]),
     async (req, res) => {
         const { body } = req;
         const patch = {

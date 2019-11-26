@@ -1,12 +1,11 @@
 import express from 'express';
 import { authorization } from '../middleware/authorization-middleware';
 import * as userServices from '../services/user-services';
-import { loggingMiddleware } from '../middleware/logging-middleware';
 
 export const usersRouter = express.Router();
 
 // geting all users, only accessable by finance managers
-usersRouter.get('', authorization([1]), loggingMiddleware,
+usersRouter.get('', authorization([1]),
 async (req, res) => {
     try {
         const users = await userServices.getUsers();
@@ -18,7 +17,7 @@ async (req, res) => {
 });
 
 // getting a user by Id, accessable by finance managers, and the user with that id
-usersRouter.get('/:userId', authorization([1], true), loggingMiddleware,
+usersRouter.get('/:userId', authorization([1], true),
 async (req, res) => {
     const userId = +req.params.userId;
     if (isNaN(userId)) {
@@ -36,7 +35,7 @@ async (req, res) => {
 });
 
 // update user info, only accessable by Admins
-usersRouter.patch('', authorization([2]), loggingMiddleware,
+usersRouter.patch('', authorization([2]),
 async (req, res) => {
     try {
         const {body} = req;

@@ -4,12 +4,15 @@ import { sessionMiddleware } from './middleware/session-middleware';
 import { getUserByUsernameAndPassword } from './services/user-services';
 import { usersRouter } from './routers/users-router';
 import { reimbursementsRouter } from './routers/reimbursements-router';
+import { loggingMiddleware } from './middleware/logging-middleware';
 
 const app = express();
 
 app.use(bodyparser.json());
 
 app.use(sessionMiddleware);
+
+
 
 // take login requests
 app.post('/login', async (req, res) => {
@@ -27,6 +30,8 @@ app.post('/login', async (req, res) => {
         res.status(e.status).send(e.message);
     }
 });
+
+app.use(loggingMiddleware);
 
 // redirect to users-router
 app.use('/users', usersRouter);

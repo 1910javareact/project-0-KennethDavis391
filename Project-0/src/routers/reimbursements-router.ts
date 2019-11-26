@@ -61,7 +61,7 @@ reimbursementsRouter.post('', authorization([1, 2, 3]),
     });
 
 // update a reimbursement
-// only admins are allowed to update a request, and only approve or deny them
+// only finance managers are allowed to update a request, and they can only approve or deny them
 // only a status and reimbursementId is required
 reimbursementsRouter.patch('', authorization([1]),
     async (req, res) => {

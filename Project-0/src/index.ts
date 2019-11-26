@@ -12,8 +12,6 @@ app.use(bodyparser.json());
 
 app.use(sessionMiddleware);
 
-
-
 // take login requests
 app.post('/login', async (req, res) => {
     const {username, password} = req.body;

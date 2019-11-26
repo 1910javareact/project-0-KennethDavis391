@@ -14,18 +14,19 @@ app.use(sessionMiddleware);
 
 // take login requests
 app.post('/login', async (req, res) => {
-    const {username, password} = req.body;
+    const { username, password } = req.body;
     // if they don't put in a username or password deny their request
     if (!username || !password) {
         res.status(400).send('Invalid Credintials');
-    }
-    // check if the username and password are valid and return a user if they are
-    try {
-        const user = await getUserByUsernameAndPassword(username, password);
-        req.session.user = user;
-        res.json(user);
-    } catch (e) {
-        res.status(e.status).send(e.message);
+    } else {
+        // check if the username and password are valid and return a user if they are
+        try {
+            const user = await getUserByUsernameAndPassword(username, password);
+            req.session.user = user;
+            res.json(user);
+        } catch (e) {
+            res.status(e.status).send(e.message);
+        }
     }
 });
 

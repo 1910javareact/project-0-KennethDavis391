@@ -1,6 +1,7 @@
 import express from 'express';
 import { authorization } from '../middleware/authorization-middleware';
 import * as reimbursementsServices from '../services/reimbursements-services';
+import jwt from 'jsonwebtoken';
 
 export const reimbursementsRouter = express.Router();
 
@@ -41,8 +42,10 @@ reimbursementsRouter.get('/author/userId/:userId', authorization([1], true),
 reimbursementsRouter.post('', authorization([1, 2, 3]),
     async (req, res) => {
         const { body } = req;
+        const token = req.header('token');
+        const user = jwt.verify(token, process.env['PROJECT_0_SECRET']);
         const post = {
-            author: req.session.user.userId,
+            author: user.userId,
             amount: body.amount,
             description: body.description,
             type: body.type
@@ -66,9 +69,11 @@ reimbursementsRouter.post('', authorization([1, 2, 3]),
 reimbursementsRouter.patch('', authorization([1]),
     async (req, res) => {
         const { body } = req;
+        const token = req.header('token');
+        const user = jwt.verify(token, process.env['PROJECT_0_SECRET']);
         const patch = {
             reimbursementId: body.reimbursementId,
-            resolver: req.session.user.userId,
+            resolver: user.userId,
             status: body.status
         };
         for (const key in patch) {

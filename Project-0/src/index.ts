@@ -1,16 +1,17 @@
 import express from 'express';
 import bodyparser from 'body-parser';
-import { sessionMiddleware } from './middleware/session-middleware';
+// import { sessionMiddleware } from './middleware/session-middleware';
 import { getUserByUsernameAndPassword } from './services/user-services';
 import { usersRouter } from './routers/users-router';
 import { reimbursementsRouter } from './routers/reimbursements-router';
-import { loggingMiddleware } from './middleware/logging-middleware';
+// import { loggingMiddleware } from './middleware/logging-middleware';
+import jwt from 'jsonwebtoken';
 
 const app = express();
 
 app.use(bodyparser.json());
 
-app.use(sessionMiddleware);
+// app.use(sessionMiddleware);
 
 // take login requests
 app.post('/login', async (req, res) => {
@@ -22,15 +23,15 @@ app.post('/login', async (req, res) => {
         // check if the username and password are valid and return a user if they are
         try {
             const user = await getUserByUsernameAndPassword(username, password);
-            req.session.user = user;
-            res.json(user);
+            const token = jwt.sign({userId: user.userId, roles: user.roles}, process.env['PROJECT_0_SECRET']);
+            res.header('token', token).json(user);
         } catch (e) {
             res.status(e.status).send(e.message);
         }
     }
 });
 
-app.use(loggingMiddleware);
+// app.use(loggingMiddleware);
 
 // redirect to users-router
 app.use('/users', usersRouter);

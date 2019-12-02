@@ -59,7 +59,7 @@ export async function daoGetReimbursementsByUserId(userId: number) {
         }
 
     } finally {
-        client.release();
+        client && client.release();
     }
 }
 
@@ -82,7 +82,7 @@ export async function daoPostReimbersement(post) {
             message: 'Internal Server Error'
         };
     } finally {
-        client.release();
+        client && client.release();
     }
 }
 
@@ -111,7 +111,7 @@ export async function daoGetReimbursementsByReimbursementId(reimbursementId: num
             };
         }
     } finally {
-        client.release();
+        client && client.release();
     }
 }
 
@@ -136,6 +136,6 @@ export async function daoUpdateReimbursement(reimbursementUpdate: Reimbursement)
             };
         }
     } finally {
-        client.release();
+        client && client.release();
     }
 }

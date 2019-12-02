@@ -61,7 +61,7 @@ export async function daoGetUsers() {
             };
         }
     } finally {
-        client.release();
+        client && client.release();
     }
 }
 
@@ -91,7 +91,7 @@ export async function daoGetUserById(id: number) {
             };
         }
     } finally {
-        client.release();
+        client && client.release();
     }
 }
 
@@ -118,6 +118,6 @@ export async function daoUpdateUser(newUser: User) {
             message: 'Internal Server Error'
         };
     } finally {
-        client.release();
+        client && client.release();
     }
 }

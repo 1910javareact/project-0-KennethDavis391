@@ -1,5 +1,12 @@
 import { Pool } from 'pg';
 
+console.log(
+    process.env['PROJECT_0_USERNAME'],
+    process.env['PROJECT_0_HOST'],
+    process.env['PROJECT_0_DATABASE'],
+    process.env['PROJECT_0_PASSWORD'],
+);
+
 export const connectionPool: Pool = new Pool({
     user: process.env['PROJECT_0_USERNAME'],
     host: process.env['PROJECT_0_HOST'],

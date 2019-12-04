@@ -22,8 +22,14 @@ app.post('/login', async (req, res) => {
     } else {
         // check if the username and password are valid and return a user if they are
         try {
+            console.log("got here");
+            
             const user = await getUserByUsernameAndPassword(username, password);
+            console.log('got here 7');
+            
             const token = jwt.sign({userId: user.userId, roles: user.roles}, process.env['PROJECT_0_SECRET']);
+            console.log('got here 8');
+            
             res.header('token', token).json(user);
         } catch (e) {
             res.status(e.status).send(e.message);

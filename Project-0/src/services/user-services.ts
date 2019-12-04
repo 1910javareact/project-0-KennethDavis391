@@ -4,6 +4,8 @@ import { User } from '../models/user';
 // call the username and password check from the repository layer, no manipulation required for this request
 export function getUserByUsernameAndPassword(username: string, password: string): Promise<User> {
     try {
+        console.log('got here 2');
+        
         return userDao.daoGetUserByUsernameAndPassword(username, password);
     } catch (e) {
         throw e;

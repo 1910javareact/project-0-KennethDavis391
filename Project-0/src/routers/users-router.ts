@@ -5,7 +5,7 @@ import * as userServices from '../services/user-services';
 export const usersRouter = express.Router();
 
 // geting all users, only accessable by finance managers
-usersRouter.get('', authorization([1]),
+usersRouter.get('', //authorization([1]),
 async (req, res) => {
     try {
         const users = await userServices.getUsers();

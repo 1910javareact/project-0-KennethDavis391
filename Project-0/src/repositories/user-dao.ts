@@ -9,18 +9,12 @@ export async function daoGetUserByUsernameAndPassword(username: string, password
     let client: PoolClient;
     try {
         client = await connectionPool.connect();
-        console.log('got here 3');
-        
         const result = await client.query('SELECT * FROM project_0.user NATURAL JOIN project_0.user_role NATURAL JOIN project_0.role WHERE username = $1 and password = $2',
             [username, password]);
 
-        console.log('got here 4');
-        
         if (result.rowCount === 0) {
             throw 'Invalid Credentials';
         } else {
-            console.log('got here 5');
-            
             return userDTOtoUser(result.rows);
         }
     } catch (e) {

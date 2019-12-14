@@ -6,11 +6,13 @@ import { usersRouter } from './routers/users-router';
 import { reimbursementsRouter } from './routers/reimbursements-router';
 // import { loggingMiddleware } from './middleware/logging-middleware';
 import jwt from 'jsonwebtoken';
+import { corsFilter } from './middleware/cors-middleware';
 
 const app = express();
 
 app.use(bodyparser.json());
 
+app.use(corsFilter)
 // app.use(sessionMiddleware);
 
 // take login requests

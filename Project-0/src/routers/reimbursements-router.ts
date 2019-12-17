@@ -48,7 +48,7 @@ reimbursementsRouter.post('', authorization([1, 2, 3]),
             author: user.userId,
             amount: body.amount,
             description: body.description,
-            type: body.type
+            typeId: body.type
         };
         for (const key in post) {
             if (!post[key]) {
@@ -74,11 +74,11 @@ reimbursementsRouter.patch('', authorization([1]),
         const patch = {
             reimbursementId: body.reimbursementId,
             resolver: user.userId,
-            status: body.status
+            statusId: body.status
         };
         for (const key in patch) {
             if (!patch[key]) {
-                res.status(400).send('Please include a status and reimbursement Id');
+                res.status(400).send('Please include a status Id and reimbursement Id');
             }
         }
         try {

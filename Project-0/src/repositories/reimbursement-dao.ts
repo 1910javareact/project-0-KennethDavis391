@@ -70,7 +70,7 @@ export async function daoPostReimbersement(post) {
         client = await connectionPool.connect();
         client.query('BEGIN');
         await client.query('INSERT INTO project_0.reimbursement (author, amount, date_submitted, date_resolved, description, resolver, status_id, type_id) values ($1,$2,$3,$4,$5,null,1,$6)',
-            [post.author, post.amount, Date.now() / 1000, 0, post.description, post.type]);
+            [post.author, post.amount, Date.now() / 1000, 0, post.description, post.typeId]);
         const result = await client.query('SELECT * FROM project_0.reimbursement WHERE author = $1 ORDER BY reimbursement_id DESC LIMIT 1 OFFSET 0',
             [post.author]);
         client.query('COMMIT');
@@ -121,7 +121,7 @@ export async function daoUpdateReimbursement(reimbursementUpdate: Reimbursement)
     try {
         client = await connectionPool.connect();
         await client.query('UPDATE project_0.reimbursement SET date_resolved = $1, resolver = $2, status_id = $3 WHERE reimbursement_id = $4',
-        [Date.now() / 1000 , reimbursementUpdate.resolver, reimbursementUpdate.status, reimbursementUpdate.reimbursementId]);
+        [Date.now() / 1000 , reimbursementUpdate.resolver, reimbursementUpdate.statusId, reimbursementUpdate.reimbursementId]);
         return await daoGetReimbursementsByReimbursementId(reimbursementUpdate.reimbursementId);
     } catch (e) {
         if (e === 'Reimbursement Does Not Exist') {

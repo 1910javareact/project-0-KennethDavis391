@@ -6,11 +6,11 @@ export class Reimbursement {
     dateResolved: number; // not null
     description: string; // not null
     resolver: number; // foreign key -> User
-    status: number; // foreign key -> ReimbursementStatus, not null
-    type: number; // foreign key -> ReimbursementType, not null
+    statusId: number; // foreign key -> ReimbursementStatus, not null
+    typeId: number; // foreign key -> ReimbursementType, not null
 
     constructor(reimbursementId: number, author: number, amount: number, dateSubmitted: number, dateResolved: number,
-        description: string, resolver: number, status: number, type: number) {
+        description: string, resolver: number, statusId: number, typeId: number) {
         this.reimbursementId = reimbursementId;
         this.author = author;
         this.amount = amount;
@@ -18,8 +18,8 @@ export class Reimbursement {
         this.dateResolved = dateResolved;
         this.description = description;
         this.resolver = resolver;
-        this.status = status;
-        this.type = type;
+        this.statusId = statusId;
+        this.typeId = typeId;
     }
 }
 
